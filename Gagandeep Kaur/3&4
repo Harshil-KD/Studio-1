@@ -1,0 +1,12 @@
+-- Creating Academic Course ..........
+
+CREATE TABLE Academic_Course(
+Course_ID TEXT NOT NULL PRIMARY KEY,
+Course_Name TEXT,
+Teacher_Name TEXT,
+Teacher_Email TEXT,
+Period TEXT,
+Day TEXT,
+Start_Time TEXT,
+End_Time TEXT,
+);
