@@ -28,4 +28,5 @@ INSERT INTO AfterSchoolActivity (Activity_ID, Activity_Name, Activity_Descriptio
 ('AS15', 'Rugby', 'Learn and play rugby with your peers', 'Bob Johnson', 'bob.johnson@example.com', 'Saturday', '14:00', '15:00', '789 Elm St', 60),
 ('AS16', 'Volleyball', 'Play and improve your volleyball skills', 'Lisa Brown', 'lisa.brown@example.com', 'Sunday', '9:00', '9:45', '890 Cedar St', 45),
 ('AS17', 'Golf', 'Learn to play golf and improve your swing', 'Mike Davis', 'mike.davis@example.com', 'Sunday', '10:00', '10:45', '1234 Elm Ave', 45),
-('AS18', 'Tennis', 'Improve your tennis skills and play with others', 'Karen Wilson', 'karen.wilson@example.com', 'Sunday', '13:00', '13:45', '5678 Pine Ave', 45);
+('AS18', 'Tennis', 'Improve your tennis skills and play with others', 'Karen Wilson', 'karen.wilson@example.com', 'Sunday', '13:00', '13:45', '5678 Pine Ave', 45),
+('AS19', 'Cricket', 'Learn the basics', 'Ravi Shastri', 'ravi@example.com', 'Sunday', '13:45', '14:45', '1234 Elm Ave', 60);
