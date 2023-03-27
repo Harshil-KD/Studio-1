@@ -1,0 +1,275 @@
+.open activityManager.db
+
+PRAGMA FOREIGN_KEYS = ON;
+
+.schema
+
+.headers on
+.mode columns
+
+
+I.	Use cases for students:
+
+	1)	View their personal information (name, email, phone, address, etc.)
+
+		select *
+		from Student
+		where Student_ID like "S001";
+
+
+	2)	View their academic enrolment.
+
+		select
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		Academic_Course.Course_Name
+		from Academic_Course
+		inner join Course_Enrollment on (Academic_Course.Course_ID = Course_Enrollment.Course_ID)
+		inner join Student on (Course_Enrollment.Student_ID = Student.Student_ID)
+		where Student.Student_ID like "S001";
+
+	3)	View available courses for the student.
+
+		
+
+	4)	View their academic course schedule.
+
+		select
+		Academic_Course.Course_Name,
+		Academic_Course.Day,
+		Academic_Course.Start_Time
+		from Academic_Course
+		inner join Course_Enrollment on (Academic_Course.Course_ID = Course_Enrollment.Course_ID)
+		where Course_Enrollment.Student_ID like "S001";
+
+
+	5)	View their after-school activity schedule.
+
+		select
+		AfterSchoolActivity.Activity_Name,
+		AfterSchoolActivity.Activity_Day,
+		AfterSchoolActivity.Activity_Start_Time,
+		AfterSchoolActivity.Activity_End_Time,
+		AfterSchoolActivity.Activity_Address
+		from AfterSchoolActivity
+		inner join Activity_Enrollment on (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+		where Activity_Enrollment.Student_ID like "S001";
+
+	6)	Search for other available activities that may be interested.
+
+		select
+		AfterSchoolActivity.Activity_Name,
+		AfterSchoolActivity.Activity_Description,
+		AfterSchoolActivity.Activity_Day,
+		AfterSchoolActivity.Activity_Start_Time,
+		AfterSchoolActivity.Activity_End_Time,
+		AfterSchoolActivity.Activity_Address
+		from AfterSchoolActivity
+		inner join Activity_Enrollment on (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+		where Activity_Enrollment.Student_ID not like "S001"
+		group by AfterSchoolActivity.Activity_Name;
+
+	7)	View full Schedule including both academic course and after school activity
+
+???????????????????????????????????????????????????????????????
+
+II.	Use cases for teachers or instructors:
+
+	8)	View their courses.
+	9)	Manage their courses (create, modify, or delete course details)
+	10)	View their course enrolments.
+	11)	Manage their course enrolments.
+	12)	View their students (access their personal information, communicate with them via email, class schedule.)
+	13)	View extracurricular activities.
+	14)	Manage extracurricular activities. (create, modify, or delete course details)
+	15)	View student’s parents’ information.
+
+	16)	After School Activities’ popularity ranking
+
+		select
+		count(Student_ID),
+		AfterSchoolActivity.Activity_Name
+		from Activity_Enrollment
+		inner join AfterSchoolActivity on (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		group by Activity_Enrollment.Activity_ID
+		order by Count(Student_ID) desc;
+
+	17)	Difference between girls’ and boys’ after school activity numbers
+
+		select
+		count(Activity_Enrollment.Activity_ID),
+		Student.Student_Gender
+		from Activity_Enrollment
+		inner join AfterSchoolActivity on (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		inner join Student on (Activity_Enrollment.Student_ID = Student.Student_ID) 
+		group by Student.Student_Gender;
+
+	18)	How many hours spent on after school activities
+
+		select
+		sum(AfterSchoolActivity.Duration)/60,
+		Student.First_Name, Student.Last_Name
+		from AfterSchoolActivity
+		inner join Activity_Enrollment on (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		inner join Student on (Activity_Enrollment.Student_ID = Student.Student_ID)
+		group by Student.Student_ID
+		order by sum(AfterSchoolActivity.Duration)/60 desc;
+
+
+	19)	Difference of hours spent on after school activities between students aged 12 and above and aged below 12
+
+		select
+		sum(AfterSchoolActivity.Duration)/60,
+		Student.First_Name,
+		Student.Last_Name,
+		Student.Student_DOB
+		from AfterSchoolActivity
+		inner join Activity_Enrollment on (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		inner join Student on (Activity_Enrollment.Student_ID = Student.Student_ID)
+		where Student.Student_DOB >= '2011-3-25'
+		group by Student.Student_DOB
+		order by sum(AfterSchoolActivity.Duration)/60 desc;
+
+		select
+		sum(AfterSchoolActivity.Duration)/60,
+		Student.First_Name,
+		Student.Last_Name,
+		Student.Student_DOB
+		from AfterSchoolActivity
+		inner join Activity_Enrollment on (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		inner join Student on (Activity_Enrollment.Student_ID = Student.Student_ID)
+		where Student.Student_DOB < '2011-3-25'
+		group by Student.Student_DOB
+		order by sum(AfterSchoolActivity.Duration)/60 desc;
+
+           *********displaying both groups in one table***************
+		select
+		sum(AfterSchoolActivity.Duration)/60,
+		Student.First_Name, Student.Last_Name,
+		Student.Student_DOB >= '2011-3-25',
+		Student.Student_DOB < '2011-3-25'
+		from AfterSchoolActivity
+		inner join Activity_Enrollment on (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		inner join Student on (Activity_Enrollment.Student_ID = Student.Student_ID)
+		group by Student.Student_DOB;
+		
+
+
+III.	Use cases for parents or guardians:
+
+	20)	View their children's personal information (name, email, phone, address, etc.)
+
+		//e.g. parent 001 view their kids enrollments
+		
+		select
+		Parents.Parent_ID,
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		Student.Student_Email,
+		Student.Student_Address,
+		Student.Student_Gender,
+		Student.Student_DOB
+		from Student
+		inner join Parents on (Student.Parent_ID = Parents.Parent_ID)
+		where Parents.Parent_ID like "P001";
+
+	21)	View and manage their children's course enrolments.
+
+		//e.g. parent 001 view their kids enrollments
+
+		select
+		Student.Parent_ID,
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		Academic_Course.Course_ID,
+		Academic_Course.Course_Name,
+		Course_Enrollment.Enrollment_Date2
+		from Course_Enrollment
+		inner join Student on (Student.Student_ID = Course_Enrollment.Student_ID)
+		inner join Academic_Course on ( Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+		where Student.Parent_ID like "P001";
+
+	22)	View their children’s schedule.
+
+		select
+		Student.Parent_ID,
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		Academic_Course.Course_Name,
+		Academic_Course.Day,
+		Academic_Course.Start_Time,
+		Academic_Course.End_Time 
+		from Course_Enrollment
+		inner join Student on (Student.Student_ID = Course_Enrollment.Student_ID)
+		inner join Academic_Course on ( Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+		where Student.Parent_ID like "P001" and Student.First_Name like "Emily";
+
+		select
+		Student.Parent_ID,
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		AfterSchoolActivity.Activity_Name,
+		AfterSchoolActivity.Activity_Day,
+		AfterSchoolActivity.Activity_Start_Time,
+		AfterSchoolActivity.Activity_End_Time,
+		AfterSchoolActivity.Activity_Address
+		from Activity_Enrollment
+		inner join Student on (Student.Student_ID = Activity_Enrollment.Student_ID)
+		inner join AfterSchoolActivity on ( Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		where Student.Parent_ID like "P001" and Student.First_Name like "Emily";
+
+	23)	View the courses and after-school activities teachers or instructors. 
+		
+		select
+		Student.Parent_ID,
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		Academic_Course.Course_Name,
+		Academic_Course.Teacher_Name,
+		Academic_Course.Teacher_Email
+		from Course_Enrollment
+		inner join Student on (Student.Student_ID = Course_Enrollment.Student_ID)
+		inner join Academic_Course on ( Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+		where Student.Parent_ID like "P001" and Student.First_Name like "Emily";
+
+		select
+		Student.Parent_ID,
+		Student.Student_ID,
+		Student.First_Name,
+		Student.Last_Name,
+		AfterSchoolActivity.Activity_Name,
+		AfterSchoolActivity.Activity_Instructor,
+		AfterSchoolActivity.Activity_Instructors_Email
+		from Activity_Enrollment
+		inner join Student on (Student.Student_ID = Activity_Enrollment.Student_ID)
+		inner join AfterSchoolActivity on ( Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+		where Student.Parent_ID like "P001" and Student.First_Name like "Emily";
+
+	24)	View available after school activities that their child did not joined
+
+		select Distinct
+		AfterSchoolActivity.Activity_Name,
+		AfterSchoolActivity.Activity_Day,
+		AfterSchoolActivity.Activity_Start_Time,
+		AfterSchoolActivity.Activity_End_Time,
+		AfterSchoolActivity.Activity_Address 
+		from AfterSchoolActivity
+		inner join Activity_Enrollment  
+		on (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+		where Activity_Enrollment.Student_ID not like "S001"
+		order by Activity_Name asc;
+
+
+
+	
+
+
+
+
+
