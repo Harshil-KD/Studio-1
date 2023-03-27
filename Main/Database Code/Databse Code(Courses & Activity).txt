@@ -1,0 +1,31 @@
+INSERT INTO Academic_Course (Course_ID, Course_Name, Teacher_Name, Teacher_Email, Day, Start_Time, End_Time, Duration) VALUES 
+('C001', 'English Literature', 'Ms. Johnson', 'johnson@email.com', 'Monday', '9:00', '9:40', 40),
+('C002', 'Algebra I', 'Mr. Smith', 'smith@email.com', 'Monday', '13:00', '13:40', 40),
+('C003', 'Biology', 'Ms. Lee', 'lee@email.com', 'Tuesday', '9:00', '9:40', 40),
+('C004', 'World History', 'Mr. Brown', 'brown@email.com', 'Tuesday', '13:00', '13:45', 45),
+('C005', 'Chemistry', 'Mr. Garcia', 'garcia@email.com', 'Wednessday', '9:00', '9:45', 45),
+('C006', 'French I', 'Ms. Ramirez', 'ramirez@email.com', 'Wednessday', '10:15', '11:00', 45),
+('C007', 'Geometry', 'Ms. Taylor', 'taylor@email.com', 'Wednessday', '13:00', '13:45', 45),
+('C008', 'Physics', 'Mr. Scott', 'scott@email.com', 'Thursday', '9:00', '9:40', 40),
+('C009', 'US History', 'Mr. Johnson', 'johnson2@email.com', 'Thursday', '13:00', '13:40', 40),
+('C010', 'Art', 'Ms. Clark', 'clark@email.com', 'Friday', '10:00', '10:45', 45);
+
+INSERT INTO AfterSchoolActivity (Activity_ID, Activity_Name, Activity_Description, Activity_Instructor, Activity_Instructors_Email, Activity_Day, Activity_Start_Time, Activity_End_Time, Activity_Address, Duration) VALUES
+('AS01', 'Basketball Club', 'Learn and practice basketball skills with other students', 'Coach Johnson', 'johnson@email.com', 'Monday', '16:00', '17:00', 'Gymnasium', 60),
+('AS02', 'Drama Club', 'Learn acting and theatrical skills with other students', 'Mrs. Smith', 'smith@email.com', 'Monday', '17:00', '17:45', 'Auditorium', 45),
+('AS03', 'Netball', 'Play and improve your netball skills', 'Sarah Lee', 'sarah.lee@example.com', 'Monday', '16:00', '17:00', '234 Maple Ave', 60),
+('AS04', 'Chess Club', 'Learn and play chess with other students', 'Mr. Lee', 'lee@email.com', 'Tuesday', '16:00', '16:45', 'Classroom A', 45),
+('AS05', 'Robotics Club', 'Learn and build robots with other students', 'Ms. Patel', 'patel@email.com', 'Tuesday', '17:00', '18:00', 'Science Lab', 60),
+('AS06', 'Coding Club', 'Learn and practice coding with other students', 'Mr. Nguyen', 'nguyen@email.com', 'Wednessday', '16:00', '16:30', 'Computer Lab', 30),
+('AS07', 'Debate Club', 'Learn and practice debate skills with other students', 'Ms. Rodriguez', 'rodriguez@email.com', 'Wednessday', '17:00', '17:45', 'Classroom B', 45),
+('AS08', 'Art Club', 'Learn and create art with other students', 'Ms. Kim', 'kim@email.com', 'Thursday', '17:00', '17:30', 'Art Room', 30),
+('AS09', 'Music Club', 'Learn and play music with other students', 'Mr. Davis', 'davis@email.com', 'Thursday', '17:45', '18:15', 'Music Room', 30),
+('AS10', 'Surfing', 'Learn to surf and catch some waves', 'David Lee', 'david.lee@example.com', 'Thursday', '16:00', '17:00', '567 Pine St', 60),
+('AS11', 'Gardening Club', 'Learn and garden with other students', 'Mrs. Jones', 'jones@email.com', 'Friday', '16:00', '16:30', 'School Garden', 30),
+('AS12', 'Cooking Club', 'Learn and cook with other students', 'Ms. Garcia', 'garcia@email.com', 'Friday', '17:00', '18:00', 'Home Economics Room', 60),
+('AS13', 'Skating', 'Learn to skate and improve your skills', 'John Smith', 'john.smith@example.com', 'Saturday', '10:00', '10:45', '123 Main St', 45),
+('AS14', 'Swimming', 'Improve your swimming techniques and endurance', 'Jane Doe', 'jane.doe@example.com', 'Saturday', '11:15', '12:00', '456 Oak Ave', 45),
+('AS15', 'Rugby', 'Learn and play rugby with your peers', 'Bob Johnson', 'bob.johnson@example.com', 'Saturday', '14:00', '15:00', '789 Elm St', 60),
+('AS16', 'Volleyball', 'Play and improve your volleyball skills', 'Lisa Brown', 'lisa.brown@example.com', 'Sunday', '9:00', '9:45', '890 Cedar St', 45),
+('AS17', 'Golf', 'Learn to play golf and improve your swing', 'Mike Davis', 'mike.davis@example.com', 'Sunday', '10:00', '10:45', '1234 Elm Ave', 45),
+('AS18', 'Tennis', 'Improve your tennis skills and play with others', 'Karen Wilson', 'karen.wilson@example.com', 'Sunday', '13:00', '13:45', '5678 Pine Ave', 45);

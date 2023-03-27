@@ -1,0 +1,29 @@
+INSERT INTO Parents (Parent_ID, First_Name, Last_Name, Parent_Email, Parent_Phone, Parent_Address) VALUES
+('P001', 'John', 'Smith', 'john.smith@email.com', 1234567890, '123 Main St'),
+('P002', 'Jane', 'Doe', 'jane.doe@email.com', 2345678901, '456 Elm St'),
+('P003', 'Bob', 'Johnson', 'bob.johnson@email.com', 3456789012, '789 Oak St'),
+('P004', 'Emily', 'Lee', 'emily.lee@email.com', 4567890123, '321 Maple St'),
+('P005', 'Mike', 'Brown', 'mike.brown@email.com', 5678901234, '654 Cedar St'),
+('P006', 'Karen', 'Taylor', 'karen.taylor@email.com', 6789012345, '987 Pine St'),
+('P007', 'David', 'Miller', 'david.miller@email.com', 7890123456, '159 Oak Ln'),
+('P008', 'Sara', 'Clark', 'sara.clark@email.com', 8901234567, '357 Maple Ave'),
+('P009', 'Eric', 'Garcia', 'eric.garcia@email.com', 9012345678, '753 Elm Ave'),
+('P010', 'Jessica', 'Ramirez', 'jessica.ramirez@email.com', 1234567890, '951 Oak Ave');
+
+INSERT INTO Student (Student_ID, First_Name, Last_Name, Student_Email, Student_Phone, Student_Address, Student_Gender, Student_DOB, Parent_ID) VALUES 
+('S001', 'Emily', 'Smith', 'emily.smith@email.com', 1234567890, '123 Main St', 'Female', '2015-01-05', 'P001'),
+('S002', 'Daniel', 'Lee', 'daniel.lee@email.com', 2345678901, '321 Maple St', 'Male', '2014-03-10', 'P004'),
+('S003', 'Sophia', 'Johnson', 'sophia.johnson@email.com', 3456789012, '789 Oak St', 'Female', '2013-06-15', 'P003'),
+('S004', 'Ava', 'Garcia', 'ava.garcia@email.com', 5678901234, '753 Elm Ave', 'Female', '2012-10-25', 'P009'),
+('S005', 'William', 'Taylor', 'william.taylor@email.com', 6789012345, '987 Pine St', 'Male', '2013-12-30', 'P006'),
+('S006', 'Olivia', 'Clark', 'olivia.clark@email.com', 7890123456, '357 Maple Ave', 'Female', '2016-02-01', 'P008'),
+('S007', 'Michael', 'Miller', 'michael.miller@email.com', 1234567890, '159 Oak Ave', 'Male', '2011-09-16', 'P007'),
+('S008', 'Daniel', 'Clark', 'daniel.clark@student.com', 7890123456, '357 MAple Ave', 'Male', '2012-10-27', 'P008'),
+('S009', 'Madison', 'Garcia', 'madison.garcia@student.com', 8901234567, '753 Elm Ave', 'Female', '2013-09-13', 'P009'),
+('S010', 'Lucas', 'Ramirez', 'lucas.ramirez@student.com', 9012345678, '951 Oak Ave', 'Male', '2014-04-08', 'P010'),
+('S011', 'Sophia', 'Smith', 'sophia.smith@student.com', 3456789012, '123 Main St', 'Female', '2007-08-14', 'P001'),
+('S012', 'James', 'Doe', 'james.doe@student.com', 4567890123, '456 Elm St', 'Male', '2008-10-03', 'P002'),
+('S013', 'Emma', 'Lee', 'emma.lee@student.com', 5678901234, '321 Maple St', 'Female', '2009-05-12', 'P004'),
+('S014', 'Oliver', 'Taylor', 'oliver.taylor@student.com', 6789012345, '987 Pine St', 'Male', '2010-11-08', 'P006'),
+('S015', 'Mia', 'Garcia', 'mia.garcia@student.com', 7890123456, '753 Elm Ave', 'Female', '2011-03-21', 'P009'),
+('S016', 'Aria', 'Brown', 'aria.brown@student.com', 9012345678, '654 Cedar St', 'Female', '2013-09-17', 'P005');

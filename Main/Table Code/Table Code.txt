@@ -1,0 +1,80 @@
+PRAGMA FOREIGN_KEYS = ON;
+
+-- Creating Table 1: Parent Table .............
+
+CREATE TABLE Parents(
+Parent_ID TEXT NOT NULL PRIMARY KEY,
+First_Name TEXT,
+Last_Name TEXT,
+Parent_Email TEXT,
+Parent_Phone INTEGER,
+Parent_Address TEXT
+);
+
+-- Creating Table 2: Student Table ..........
+
+CREATE TABLE Student(
+Student_ID TEXT NOT NULL PRIMARY KEY,
+First_Name TEXT,
+Last_Name TEXT,
+Student_Email TEXT,
+Student_Phone INTEGER,
+Student_Address TEXT,
+Student_Gender TEXT,
+Student_DOB TEXT,
+Parent_ID TEXT,
+FOREIGN KEY (Parent_ID) REFERENCES Parents(Parent_ID)
+);
+
+-- Creating  Table 5: Academic Course ..........
+
+CREATE TABLE Academic_Course(
+Course_ID TEXT NOT NULL PRIMARY KEY,
+Course_Name TEXT,
+Teacher_Name TEXT,
+Teacher_Email TEXT,
+Day TEXT,
+Start_Time TEXT,
+End_Time TEXT,
+Duration Integer
+);
+
+--Table 6: After School Activity-----------------
+
+CREATE TABLE AfterSchoolActivity(
+Activity_ID TEXT NOT NULL PRIMARY KEY,
+Activity_Name TEXT ,
+Activity_Description TEXT,
+Activity_Instructor TEXT,
+Activity_Instructors_Email TEXT,
+Activity_Day TEXT,
+Activity_Start_Time TEXT,
+Activity_End_Time TEXT,
+Activity_Address TEXT,
+Duration Integer
+);
+
+-- Creating Table 4: Activity Enrollment Table ..........
+
+CREATE TABLE Activity_Enrollment(
+Student_ID TEXT,
+Activity_ID TEXT,
+Enrollment_Date1 TEXT,
+FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+FOREIGN KEY (Activity_ID) REFERENCES AfterSchoolActivity(Activity_ID)
+);
+
+
+-- Creating  Table 3: AcademicCourse Enrollment Table
+
+CREATE TABLE Course_Enrollment(
+Student_ID TEXT,
+Course_ID TEXT,
+Enrollment_Date2 TEXT,
+FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+FOREIGN KEY (Course_ID) REFERENCES Academic_Course(Course_ID)
+);
+
+
+.headers on
+.mode columns
