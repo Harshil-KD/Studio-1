@@ -1,0 +1,465 @@
+/*****Use cases with queries*******/
+
+.open activityManager.db
+
+PRAGMA FOREIGN_KEYS = ON;
+
+.schema
+
+.headers on
+.mode columns
+
+
+--I.	Use cases for students:
+
+	--	1)	View their own personal information (name, email, phone, address, etc.)
+
+			select *
+			from Student
+			where Student_ID like "S001";
+			
+	--2)	View their own academic enrolment.
+	
+			SELECT
+				Course_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name,
+				Course_Enrollment.Course_ID,
+				Academic_Course.Course_Name,
+				Academic_Course.Teacher_Name,
+				Academic_Course.Day
+			FROM Course_Enrollment
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			LEFT JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			WHERE 
+				Course_Enrollment.Student_ID = "S001";
+	
+	--3)	View available courses for the student.
+	
+			SELECT 
+				Academic_Course.Course_ID,
+				Academic_Course.Course_Name,
+				Academic_Course.Teacher_Name,
+				Academic_Course.Teacher_Email,
+                Academic_Course.Day,
+				Academic_Course.Start_Time,
+				Academic_Course.End_Time
+			FROM Academic_Course
+			LEFT JOIN Course_Enrollment ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			AND Course_Enrollment.Student_ID = "S001" 
+			WHERE 
+				Course_Enrollment.Student_ID IS NULL;
+	
+	--4)	View their academic course schedule.
+	
+			SELECT
+				Course_Enrollment.Student_ID,
+				Student.First_Name,
+				Academic_Course.Course_Name,
+				Academic_Course.Day,
+				Academic_Course.Start_Time,
+				Academic_Course.Duration,
+				Academic_Course.End_Time
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Student.Student_ID = "S001";
+	
+	--5)	View their after-school activity schedule.
+	
+			SELECT
+				AfterSchoolActivity.Activity_Name,
+				AfterSchoolActivity.Activity_Day,
+				AfterSchoolActivity.Activity_Start_Time,
+				AfterSchoolActivity.Duration,
+				AfterSchoolActivity.Activity_End_Time,
+				AfterSchoolActivity.Activity_Address
+			FROM Activity_Enrollment
+			INNER JOIN AfterSchoolActivity ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+			INNER JOIN Student ON (Activity_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Student.Student_ID = "S001";
+	
+	--6)	Search for other available activities that may be interested.
+			
+            SELECT 
+				AfterSchoolActivity.Activity_ID,
+				AfterSchoolActivity.Activity_Name,
+				AfterSchoolActivity.Activity_Description,
+				AfterSchoolActivity.Activity_Day,
+				AfterSchoolActivity.Activity_Start_Time,
+				AfterSchoolActivity.Activity_End_Time,
+				AfterSchoolActivity.Activity_Address
+			FROM AfterSchoolActivity
+			LEFT JOIN Activity_Enrollment ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+			AND Activity_Enrollment.Student_ID = "S001"
+			WHERE Activity_Enrollment.Student_ID IS NULL;
+	
+--II.	Use cases for teachers or instructors:
+
+	--7)	View their courses.
+	
+			SELECT 
+				*
+			FROM Academic_Course
+			WHERE Academic_Course.Teacher_Name = "Ms. Johnson";
+	
+	--8)	Manage their courses (create, modify, or delete course details)
+	
+			SELECT 
+				*
+			FROM Academic_Course
+			WHERE Academic_Course.Teacher_Name = "Ms. Johnson";
+
+			UPDATE Academic_Course
+			SET Start_Time = "8:50"
+			WHERE Academic_Course.Course_ID = "C001";
+
+			UPDATE Academic_Course
+			SET End_Time = "9:30"
+			WHERE Academic_Course.Course_ID = "C001";
+
+			SELECT 
+				*
+			FROM Academic_Course
+			WHERE Academic_Course.Teacher_Name = "Ms. Johnson";
+	
+	--9)	View their course enrolments.
+	
+			SELECT
+				Course_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Course_Enrollment.Course_ID = "C010" OR 
+				Academic_Course.Course_Name = "Art" OR 
+				Academic_Course.Teacher_Name = "Ms. Clark";
+	
+	--10)	Manage their course enrolments.
+	
+			SELECT
+				Course_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Course_Enrollment.Course_ID = "C010" OR 
+				Academic_Course.Course_Name = "Art" OR 
+				Academic_Course.Teacher_Name = "Ms. Clark";
+
+
+			DELETE FROM Course_Enrollment
+			WHERE Course_Enrollment.Student_ID = "S014";
+
+
+			SELECT
+				Course_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Course_Enrollment.Course_ID = "C010" OR 
+				Academic_Course.Course_Name = "Art" OR 
+				Academic_Course.Teacher_Name = "Ms. Clark";
+	
+	--11)	View their students (access their personal information, communicate with them via email, class schedule)
+	
+			SELECT
+				Student.Parent_ID,
+				Course_Enrollment.Student_ID,
+				Student.First_Name,
+				Parents.First_Name AS "Middle Name",
+				Student.Last_Name,
+				Student.Student_Address,
+				Student.Student_DOB,
+				Student.Student_Gender,
+				Student.Student_Phone
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			LEFT JOIN Parents ON (Parents.Parent_ID = Student.Parent_ID)
+			WHERE 
+				Course_Enrollment.Course_ID = "C010" OR 
+				Academic_Course.Course_Name = "Art" OR 
+				Academic_Course.Teacher_Name = "Ms. Clark";
+	
+	--12)	View afterschool activities.
+	
+			SELECT
+				*
+			FROM AfterSchoolActivity
+			WHERE AfterSchoolActivity.Activity_Instructor = "Coach Johnson";
+	
+	--13)	Manage afterschool activities. (Create, modify, or delete course details)
+	
+			SELECT
+				*
+			FROM AfterSchoolActivity
+			WHERE AfterSchoolActivity.Activity_Instructor = "Coach Johnson";
+
+			UPDATE AfterSchoolActivity
+			SET Activity_Address = "Auckland Gymnasium"
+			WHERE Activity_ID = "AS01";
+			
+			SELECT
+				*
+			FROM AfterSchoolActivity
+			WHERE AfterSchoolActivity.Activity_Instructor = "Coach Johnson";
+	
+	--14)	View student’s parents’ information.
+	
+			SELECT
+				Student.Parent_ID,
+				Course_Enrollment.Student_ID,
+				Parents.Last_Name,
+				Parents.First_Name AS "Parent Name",
+				Student.First_Name AS "Student Name",
+				Parents.Parent_Email,
+				Parents.Parent_Phone,
+				Parents.Parent_Address,
+				Student.Student_Gender
+			FROM Course_Enrollment
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			LEFT JOIN Parents ON (Student.Parent_ID = Parents.Parent_ID)
+			INNER JOIN Academic_Course ON (Academic_Course.Course_ID = Course_Enrollment.Course_ID)
+			WHERE
+					Course_Enrollment.Course_ID = "C001" OR
+					Academic_Course.Course_Name = "English Literature" OR
+					Academic_Course.Teacher_Name = "Ms. Johnson";
+	
+	
+	--15)	After School Activities popularity ranking by no. of students enrolled
+	
+			SELECT
+				Count(Activity_Enrollment.Student_ID) AS "No. of Students Enrolled",
+				Activity_Enrollment.Activity_ID,
+				AfterSchoolActivity.Activity_Name,
+				AfterSchoolActivity.Activity_Description,
+				AfterSchoolActivity.Activity_Instructor
+			FROM Activity_Enrollment
+			INNER JOIN AfterSchoolActivity ON (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+			GROUP BY Activity_Enrollment.Activity_ID
+			ORDER BY Count(Activity_Enrollment.Student_ID) DESC;
+			
+			SELECT
+				Count(Course_Enrollment.Student_ID) AS "No. of Students Enrolled",
+				Course_Enrollment.Course_ID,
+				Academic_Course.Course_Name,
+				Academic_Course.Teacher_Name
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			GROUP BY 
+				Course_Enrollment.Course_ID
+			ORDER BY 
+				Count(Course_Enrollment.Student_ID) DESC;
+	
+	
+	--16)	Difference between girls’ and boys’ numbers of enrolled after school activity 
+	
+			SELECT
+				count(Activity_Enrollment.Activity_ID), AS "No. of enrolled activity",
+				Student.Student_Gender
+			FROM Activity_Enrollment
+			INNER JOIN Student ON (Student.Student_ID = Activity_Enrollment.Student_ID)
+			INNER JOIN AfterSchoolActivity ON (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+			GROUP BY 
+				Student.Student_Gender;
+
+	--17)	How many hours spent on after school activities
+	
+			SELECT
+				Activity_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name,
+				SUM(AfterSchoolActivity.Duration)/60 AS "Duration(in hours) per week",
+				SUM(AfterSchoolActivity.Duration*4)/60 AS "Duration(in hours) per month",
+				SUM(AfterSchoolActivity.Duration*52)/60 AS "Duration(in hours) per year"
+			FROM Activity_Enrollment
+			INNER JOIN Student ON (Student.Student_ID = Activity_Enrollment.Student_ID)
+			INNER JOIN AfterSchoolActivity ON (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+			GROUP BY 
+				Activity_Enrollment.Student_ID;
+	
+	--18)	Difference of hours per week spent on after school activities between students aged 12 and above and aged below 12
+
+			SELECT
+				Activity_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name,
+				Student.Student_DOB AS "Age below 12",
+				SUM(AfterSchoolActivity.Duration)/60 AS "Duration (in hours)"
+			FROM Activity_Enrollment
+			INNER JOIN Student ON (Student.Student_ID = Activity_Enrollment.Student_ID)
+			INNER JOIN AfterSchoolActivity ON (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+			WHERE Student.Student_DOB >= '2011-03-25'
+			GROUP BY 
+				Activity_Enrollment.Student_ID
+			ORDER BY sum(AfterSchoolActivity.Duration)/60 DESC;
+				
+			SELECT
+				Activity_Enrollment.Student_ID,
+				Student.First_Name,
+				Student.Last_Name,
+				Student.Student_DOB AS "Aged 12 and above",
+				SUM(AfterSchoolActivity.Duration)/60 AS "Duration (in hours)"
+			FROM Activity_Enrollment
+			INNER JOIN Student ON (Student.Student_ID = Activity_Enrollment.Student_ID)
+			INNER JOIN AfterSchoolActivity ON (AfterSchoolActivity.Activity_ID = Activity_Enrollment.Activity_ID)
+			WHERE Student.Student_DOB < '2011-03-25'
+			GROUP BY 
+				Activity_Enrollment.Student_ID
+			ORDER BY sum(AfterSchoolActivity.Duration)/60 DESC;
+
+--III.	Use cases for parents or guardians:
+
+	--19)	View their children's personal information (name, email, phone, address, etc.)
+	
+			SELECT
+				Student.Parent_ID,
+				Parents.First_Name AS "Parent Name",
+				Student.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",								
+				Student.Student_Address AS "Child Address",
+				Student.Student_DOB AS "Child DOB",
+				Student.Student_Email AS "Child Email",
+				Student.Student_Phone AS "Child Phone"
+			FROM Student
+			INNER JOIN Parents ON (Student.Parent_ID = Parents.Parent_ID)
+			WHERE
+				student.Parent_ID = "P001";
+	
+	--20)	View and manage their children's course enrolments.
+			
+			SELECT
+				Student.Parent_ID,
+				Course_Enrollment.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",
+				Course_Enrollment.Course_ID,
+				Academic_Course.Course_Name AS "Course Name",
+				Academic_Course.Teacher_Name  AS "Teacher",
+				Academic_Course.Day AS "Day"
+			FROM Course_Enrollment
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			WHERE 
+				Student.Parent_ID = "P001"
+			ORDER BY 
+				Course_Enrollment.Student_ID ASC;
+
+			DELETE FROM Course_Enrollment
+			WHERE Course_ID = "C006";
+			
+			INSERT INTO Course_Enrollment(Student_ID, Course_ID, Enrollment_Date2) VALUES
+			("S001", "C007", "7/2/2023");
+			
+			SELECT
+				Student.Parent_ID,
+				Course_Enrollment.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",
+				Course_Enrollment.Course_ID,
+				Academic_Course.Course_Name AS "Course Name",
+				Academic_Course.Teacher_Name  AS "Teacher",
+				Academic_Course.Day AS "Day"
+			FROM Course_Enrollment
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			WHERE 
+				Student.Parent_ID = "P001"
+			ORDER BY 
+				Course_Enrollment.Student_ID ASC;
+				
+			
+	--21)	View their children’s schedule.
+	
+			SELECT
+				Student.Parent_ID,
+				Course_Enrollment.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",
+				Academic_Course.Course_Name AS "Course Name",
+				Academic_Course.Day AS "Day",
+				Academic_Course.Start_Time,
+				Academic_Course.End_Time
+			FROM Course_Enrollment
+			INNER JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Student.Parent_ID = "P001"
+			ORDER BY 
+				Course_Enrollment.Student_ID ASC;
+				
+			SELECT
+				Student.Parent_ID,
+				Activity_Enrollment.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",
+				AfterSchoolActivity.Activity_Name  AS "Activity Name",
+				AfterSchoolActivity.Activity_Day AS "Day",
+				AfterSchoolActivity.Activity_Start_Time,
+				AfterSchoolActivity.Activity_End_Time
+			FROM Activity_Enrollment
+			INNER JOIN AfterSchoolActivity ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+			INNER JOIN Student ON (Activity_Enrollment.Student_ID = Student.Student_ID)
+			WHERE 
+				Student.Parent_ID = "P001"
+			ORDER BY 
+				Activity_Enrollment.Student_ID ASC;
+	
+	--22)	View their Children's the courses and after-school activities teachers or instructors.
+
+			SELECT
+				Student.Parent_ID,
+				Course_Enrollment.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",
+				Course_Enrollment.Course_ID AS "Course ID",
+				Academic_Course.Course_Name AS "Course Name",				
+				Academic_Course.Teacher_Name AS "Teacher",
+				Academic_Course.Teacher_Email AS "Teacher's Email"
+			FROM Course_Enrollment
+			INNER JOIN Student ON (Course_Enrollment.Student_ID = Student.Student_ID)
+			LEFT JOIN Academic_Course ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			WHERE 
+				Student.Parent_ID = "P001";
+				
+			SELECT
+				Student.Parent_ID,
+				Activity_Enrollment.Student_ID,
+				Student.First_Name AS "Child Name",
+				Student.Last_Name AS "Child Surname",
+				AfterSchoolActivity.Activity_Name  AS "Activity Name",
+				AfterSchoolActivity.Activity_Instructor AS "Instructor",
+				AfterSchoolActivity.Activity_Instructors_Email AS "Instructor's Email"
+			FROM Activity_Enrollment
+			INNER JOIN Student ON (Activity_Enrollment.Student_ID = Student.Student_ID)
+			INNER JOIN AfterSchoolActivity ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+			WHERE
+				Student.Parent_ID = "P001";
+
+				
+	
+	--23)	View available after school activities that their child did not joined.
+	
+            SELECT 
+				AfterSchoolActivity.Activity_ID,
+				AfterSchoolActivity.Activity_Name,
+				AfterSchoolActivity.Activity_Description,
+				AfterSchoolActivity.Activity_Day,
+				AfterSchoolActivity.Activity_Start_Time,
+				AfterSchoolActivity.Activity_End_Time,
+				AfterSchoolActivity.Activity_Address
+			FROM AfterSchoolActivity
+			LEFT JOIN Activity_Enrollment ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+			AND Activity_Enrollment.Student_ID = "S001"
+			WHERE Activity_Enrollment.Student_ID IS NULL;
