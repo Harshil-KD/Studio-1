@@ -425,7 +425,7 @@ INSERT INTO Activity_Enrollment(Student_ID, Activity_ID, Enrollment_Date1) VALUE
 			
 	--2)	View their academic enrolment.
 	
-			SELECT
+			SELECT DISTINCT
 				Course_Enrollment.Student_ID,
 				Student.First_Name,
 				Student.Last_Name,
@@ -441,7 +441,7 @@ INSERT INTO Activity_Enrollment(Student_ID, Activity_ID, Enrollment_Date1) VALUE
 	
 	--3)	View available courses for the student.
 	
-			SELECT DISTINCT
+			SELECT 
 				Academic_Course.Course_ID,
 				Academic_Course.Course_Name,
 				Academic_Course.Teacher_Name,
@@ -450,9 +450,10 @@ INSERT INTO Activity_Enrollment(Student_ID, Activity_ID, Enrollment_Date1) VALUE
 				Academic_Course.Duration,
 				Academic_Course.End_Time
 			FROM Academic_Course
-			INNER JOIN Course_Enrollment ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			LEFT JOIN Course_Enrollment ON (Course_Enrollment.Course_ID = Academic_Course.Course_ID)
+			AND Course_Enrollment.Student_ID = "S001" 
 			WHERE 
-				Course_Enrollment.Student_ID NOT LIKE "S001";
+				Course_Enrollment.Student_ID IS NULL;
 	
 	--4)	View their academic course schedule.
 	
@@ -485,7 +486,7 @@ INSERT INTO Activity_Enrollment(Student_ID, Activity_ID, Enrollment_Date1) VALUE
 	
 	--6)	Search for other available activities that may be interested.
 	
-			SELECT DISTINCT
+			SELECT 
 				AfterSchoolActivity.Activity_ID,
 				AfterSchoolActivity.Activity_Name,
 				AfterSchoolActivity.Activity_Description,
@@ -494,8 +495,9 @@ INSERT INTO Activity_Enrollment(Student_ID, Activity_ID, Enrollment_Date1) VALUE
 				AfterSchoolActivity.Duration,
 				AfterSchoolActivity.Activity_End_Time
 			FROM AfterSchoolActivity
-			INNER JOIN Activity_Enrollment ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
-			WHERE Activity_Enrollment.Student_ID NOT LIKE "S001";
+			LEFT JOIN Activity_Enrollment ON (Activity_Enrollment.Activity_ID = AfterSchoolActivity.Activity_ID)
+			AND Activity_Enrollment.Student_ID = "S001"
+			WHERE Activity_Enrollment.Student_ID IS NULL;
 	
 --II.	Use cases for teachers or instructors:
 
