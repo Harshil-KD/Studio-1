@@ -2,9 +2,9 @@
 
 #Made By:
     Harshil Dholakiya (Student ID: 1000114612)
-    Liman Wu
+    Liman Wu (1000117629)
     Gagandeep Kaur
-    Liman Wu
+    ARSHDEEP SINGH
 
 Project: Student Activity Manager
 
